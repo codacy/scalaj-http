@@ -17,7 +17,7 @@ package scalaj.http
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import java.io.StringWriter
 import com.fasterxml.jackson.databind.json.JsonMapper
