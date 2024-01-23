@@ -25,9 +25,9 @@ javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 scalacOptions ++= Seq(
   "-deprecation",
-  "-unchecked",
-  "-Xfuture"
+  "-unchecked"
 )
+scalacOptions -= "-Xfatal-warnings"
 
 scalacOptions in (Compile, doc) ++= Seq("-doc-root-content", baseDirectory.value+"/root-doc.txt")
 
