@@ -19,7 +19,7 @@ package scalaj.http
 import collection.immutable.TreeMap
 import java.lang.reflect.Field
 import java.net.{HttpCookie, HttpURLConnection, InetSocketAddress, Proxy, URL, URLEncoder, URLDecoder}
-import java.io.{DataOutputStream, InputStream, BufferedReader, InputStreamReader, ByteArrayInputStream,
+import java.io.{InputStream, InputStreamReader, ByteArrayInputStream,
   ByteArrayOutputStream}
 import java.security.cert.X509Certificate
 import javax.net.ssl.HttpsURLConnection

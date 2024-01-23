@@ -6,7 +6,7 @@ import org.junit.Test
 class OAuthTest {
   
   @Test
-  def oauthShouldCorrectlySign: Unit = {
+  def oauthShouldCorrectlySign(): Unit = {
     // from example http://hueniverse.com/2008/10/beginners-guide-to-oauth-part-iv-signing-requests/
     val params = List(
       ("oauth_nonce", "kllo9940pd9333jh"),
@@ -22,7 +22,7 @@ class OAuthTest {
   }
 
   @Test
-  def oauthShouldCorrectlySignMultiPart: Unit = {
+  def oauthShouldCorrectlySignMultiPart(): Unit = {
     val oauthInputParams= List(
       ("oauth_nonce", "kllo9940pd9333jh"),
       ("oauth_timestamp", "1191242096")

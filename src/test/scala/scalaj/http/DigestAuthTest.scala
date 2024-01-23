@@ -6,7 +6,7 @@ import org.junit.Assert._
 
 class DigestAuthTest {
   @Test
-  def jettyDigestParsing: Unit = {
+  def jettyDigestParsing(): Unit = {
     val authDetails = DigestAuth.getAuthDetails("""Digest realm="Test Realm", domain="", nonce="J85e99PhPObD5sWM75R79iK1A2lI0DAJ", algorithm=MD5, qop="auth", stale=true""").get
     assertEquals("Digest", authDetails.authType)
     assertEquals(Some("Test Realm"), authDetails.params.get("realm"))
@@ -16,7 +16,7 @@ class DigestAuthTest {
   }
 
   @Test
-  def lowercaseDigestParsing: Unit = {
+  def lowercaseDigestParsing(): Unit = {
     val authDetails = DigestAuth.getAuthDetails("""digest nonce="f490238b7d1c6ad52491b0c1", qop="auth", realm="escucha03.fccma.com", algorithm="md5", opaque="22dd52c72348a17f099c6795b36a6a9f-ZjQ5MDIzOGI3ZDFjNmFkNTI0OTFiMGMxLDcyLjg5LjI1NC4yMzQsMTQ4ODgwNzQ1OA=="""").get
     assertEquals("digest", authDetails.authType)
     assertEquals(Some("escucha03.fccma.com"), authDetails.params.get("realm"))
@@ -25,7 +25,7 @@ class DigestAuthTest {
   }
 
   @Test
-  def httpbinDigestParsing: Unit = {
+  def httpbinDigestParsing(): Unit = {
     val authDetails = DigestAuth.getAuthDetails("""Digest nonce="026ef3f7112f5c6da8f0e7beb1ebcc74", opaque="9777e826c52b062b54454106581f808f", realm="me@kennethreitz.com", qop="auth, auth-int"""").get
     assertEquals("Digest", authDetails.authType)
     assertEquals("got detalis " + authDetails, Some("026ef3f7112f5c6da8f0e7beb1ebcc74"), authDetails.params.get("nonce"))
@@ -33,7 +33,7 @@ class DigestAuthTest {
   }
 
   @Test
-  def digestComparedToCurl: Unit = {
+  def digestComparedToCurl(): Unit = {
     val params = Map(
       "nonce" -> "6b1b1cc62a4fdc73aa7df7762263be43",
       "opaque" -> "ba8b9fda8a77aba832112b261769c172",

@@ -112,7 +112,7 @@ class HttpTest {
   }
 
   @Test
-  def basicAuthRequest: Unit = {
+  def basicAuthRequest(): Unit = {
     val expectedBody = "Hello from authed servlet"
     makeAuthenticatedRequest(new BasicAuthenticator(), "test", "test", expectedBody){url =>
       val result = Http(url).auth("test", "test").asString
@@ -122,7 +122,7 @@ class HttpTest {
   }
 
   @Test
-  def digestAuthRequest: Unit = {
+  def digestAuthRequest(): Unit = {
     val expectedBody = "Hello from authed servlet"
     makeAuthenticatedRequest(new DigestAuthenticator(), "test", "test", expectedBody){url =>
       val result = Http(url).digestAuth("test", "test").asString
@@ -132,7 +132,7 @@ class HttpTest {
   }
 
   @Test
-  def digestAuthRequestBadCreds: Unit = {
+  def digestAuthRequestBadCreds(): Unit = {
     // verify that we don't loop infinitely on bad creds
     makeAuthenticatedRequest(new DigestAuthenticator(), "test", "test", "hi"){url =>
       val result = Http(url).digestAuth("test", "wrong").asString
@@ -141,7 +141,7 @@ class HttpTest {
   }
 
   @Test
-  def basicRequest: Unit = {
+  def basicRequest(): Unit = {
     val expectedCode = HttpServletResponse.SC_OK
     val expectedBody = "ok"
     val expectedContentType = "text/text;charset=utf-8"
@@ -168,7 +168,7 @@ class HttpTest {
   // TODO: .oauth currently must be the last method to be called because it captures the state of the request.
   // see https://github.com/scalaj/scalaj-http/pull/156
   @Test
-  def oauthRequestShouldHaveCorrectAuthHeader: Unit = {
+  def oauthRequestShouldHaveCorrectAuthHeader(): Unit = {
     val consumerToken = Token("dpf43f3p2l4k3l03","kd94hf93k423kf44")
     val userToken = Token("nnch734d00sl2jdk","pfkkdhi9sl3r4s00")
 
@@ -204,7 +204,7 @@ class HttpTest {
   }
 
   @Test
-  def serverError: Unit = {
+  def serverError(): Unit = {
     makeRequest((req, resp) => {
       resp.setStatus(500)
       resp.getWriter.print("error")
@@ -219,7 +219,7 @@ class HttpTest {
   }
 
   @Test
-  def redirectShouldNotFollowByDefault: Unit = {
+  def redirectShouldNotFollowByDefault(): Unit = {
     makeRequest((req, resp) => {
       resp.setStatus(301)
       resp.setHeader("Location", "http://www.google.com/")
@@ -232,7 +232,7 @@ class HttpTest {
   }
 
   @Test
-  def shouldFollowRedirectOnProtocolSwitch: Unit = {
+  def shouldFollowRedirectOnProtocolSwitch(): Unit = {
     List(301, 302, 307).foreach(status => {
       makeRequest((_, resp) => {
         resp.setStatus(status)
@@ -249,7 +249,7 @@ class HttpTest {
   }
 
   @Test
-  def headersShouldBeCaseInsensitive: Unit = {
+  def headersShouldBeCaseInsensitive(): Unit = {
     makeRequest((req, resp) => {
       // special check for content-encoding header, though it seems like jetty normalizes it.
       resp.setHeader("content-ENCODING", "gzip")
@@ -269,7 +269,7 @@ class HttpTest {
   }
 
   @Test
-  def asParams: Unit = {
+  def asParams(): Unit = {
     makeRequest((req, resp) => {
       resp.setStatus(200)
       resp.getWriter.print("foo=bar")
@@ -280,7 +280,7 @@ class HttpTest {
   }
 
   @Test
-  def asParamMap: Unit = {
+  def asParamMap(): Unit = {
     makeRequest((req, resp) => {
       resp.setStatus(200)
       resp.getWriter.print("foo=bar")
@@ -291,7 +291,7 @@ class HttpTest {
   }
 
   @Test
-  def asBytes: Unit = {
+  def asBytes(): Unit = {
     makeRequest((req, resp) => {
       resp.setStatus(200)
       resp.getWriter.print("hi")
@@ -302,7 +302,7 @@ class HttpTest {
   }
 
   @Test
-  def shouldPrependOptions: Unit = {
+  def shouldPrependOptions(): Unit = {
     val http = Http("http://foo.com/")
     val origOptions = http.options
     val origOptionsLength = origOptions.length
@@ -315,7 +315,7 @@ class HttpTest {
   }
 
   @Test
-  def lastTimeoutValueShouldWin: Unit = {
+  def lastTimeoutValueShouldWin(): Unit = {
     makeRequest((req, resp) => {
       resp.setStatus(200)
       resp.getWriter.print("hi")
@@ -332,13 +332,13 @@ class HttpTest {
   }
 
   @Test
-  def readString: Unit = {
+  def readString(): Unit = {
     val bais = new ByteArrayInputStream("hello there".getBytes(HttpConstants.utf8))
     assertEquals("hello there", HttpConstants.readString(bais))
   }
 
   @Test
-  def overrideTheMethod: Unit = {
+  def overrideTheMethod(): Unit = {
     makeRequest((req, resp) => {
       assertEquals("DELETE", req.getMethod)
       resp.setStatus(200)
@@ -349,7 +349,7 @@ class HttpTest {
   }
 
   @Test
-  def unofficialOverrideTheMethod: Unit = {
+  def unofficialOverrideTheMethod(): Unit = {
     makeRequest((req, resp) => {
       resp.setStatus(200)
       resp.getWriter.print("")
@@ -367,7 +367,7 @@ class HttpTest {
   }
 
   @Test
-  def postDataOverrideMethod: Unit = {
+  def postDataOverrideMethod(): Unit = {
     makeRequest((req, resp) => {
       assertEquals("GET", req.getMethod)
       assertEquals("hi", req.getReader().readLine())
@@ -379,7 +379,7 @@ class HttpTest {
   }
 
   @Test
-  def shouldUseCharsetFromServerContentType: Unit = {
+  def shouldUseCharsetFromServerContentType(): Unit = {
     val diverseString = "£ÇÜfÿ"
     Seq("UTF-8", "ISO-8859-1").foreach { charset =>
       makeRequest((req, resp) => {
@@ -393,7 +393,7 @@ class HttpTest {
   }
 
   @Test
-  def proxyNoAuthTest: Unit = {
+  def proxyNoAuthTest(): Unit = {
     val theExpectedBody = "hello hello"
     makeProxiedRequest((proxyHost, proxyPort) => {
       makeRequest((req, resp) => {
@@ -408,7 +408,7 @@ class HttpTest {
   }
 
   @Test
-  def proxyBadAuthTest: Unit = {
+  def proxyBadAuthTest(): Unit = {
     makeProxiedRequest((proxyHost, proxyPort) => {
       makeRequest((req, resp) => {
         resp.setStatus(200)
@@ -420,7 +420,7 @@ class HttpTest {
   }
 
   @Test
-  def proxyCorrectAuthTest: Unit = {
+  def proxyCorrectAuthTest(): Unit = {
     val theExpectedBody = "hello hello"
     makeProxiedRequest((proxyHost, proxyPort) => {
       makeRequest((req, resp) => {
@@ -435,7 +435,7 @@ class HttpTest {
   }
 
   @Test
-  def allModificationsAreAdditive: Unit = {
+  def allModificationsAreAdditive(): Unit = {
     val params = List("a" -> "b")
     val proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("host", 80))
     val headers = List("foo" -> "bar")
@@ -463,13 +463,13 @@ class HttpTest {
   }
 
   @Test(expected = classOf[java.net.ConnectException])
-  def serverDown: Unit = {
+  def serverDown(): Unit = {
     val response = Http("http://localhost:9999/").execute()
     assertEquals("", response.body)
   }
 
   @Test
-  def varargs: Unit = {
+  def varargs(): Unit = {
     val req = Http("http://foo.com/").params("a" -> "b", "b" -> "a")
                        .headers("a" -> "b", "b" -> "a")
                        .options(HttpOptions.connTimeout(100), HttpOptions.readTimeout(100))
@@ -477,38 +477,38 @@ class HttpTest {
   }
 
   @Test
-  def parseCookies: Unit = {
+  def parseCookies(): Unit = {
     val httpResponse = HttpResponse("hi", 200, Map("Set-Cookie" -> IndexedSeq("foo=bar", "baz=biz")))
     assertEquals(IndexedSeq(new HttpCookie("foo", "bar"), new HttpCookie("baz", "biz")), httpResponse.cookies)
   }
 
   @Test(expected = classOf[scalaj.http.HttpStatusException])
-  def throwErrorThrowsWith401: Unit = {
+  def throwErrorThrowsWith401(): Unit = {
     HttpResponse("hi", 401, Map.empty).throwError
   }
 
   @Test(expected = classOf[scalaj.http.HttpStatusException])
-  def throwServerErrorThrowsWith400: Unit = {
+  def throwServerErrorThrowsWith400(): Unit = {
     HttpResponse("hi", 400, Map.empty).throwError
   }
 
   @Test
-  def throwErrorOkWith200: Unit = {
+  def throwErrorOkWith200(): Unit = {
     assertEquals(200, HttpResponse("hi", 200, Map.empty).throwError.code)
   }
 
   @Test
-  def throwServerErrorOkWith400: Unit = {
+  def throwServerErrorOkWith400(): Unit = {
     assertEquals(400, HttpResponse("hi", 400, Map.empty).throwServerError.code)
   }
 
   @Test
-  def testGetEquals: Unit = {
+  def testGetEquals(): Unit = {
     assertEquals(Http("http://foo.com/"), Http("http://foo.com/"))
   }
 
   @Test
-  def testPostEquals: Unit = {
+  def testPostEquals(): Unit = {
     assertEquals(Http("http://foo.com/").postData("hi"), Http("http://foo.com/").postData("hi"))
   }
 
