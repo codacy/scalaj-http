@@ -3,6 +3,9 @@ version: 2.1
 orbs:
   codacy: codacy/base@10.11.1
 
+references:
+  cache_prefix: &cache_prefix sbt-cache-24012024
+
 workflows:
   version: 2
 
@@ -16,6 +19,7 @@ workflows:
             - run:
                 name: Compile tests
                 command: sbt +test:compile
+          cache_prefix: *cache_prefix
           setup_remote_docker: false
           context: CodacyAWS
           requires:
@@ -32,8 +36,11 @@ workflows:
             - run:
                 name: Release bundle to Sonatype
                 command: sbt sonatypeBundleRelease
-          setup_remote_docker: false
+          cache_prefix: *cache_prefix
           context: CodacyAWS
+          aws_profile: production
+          use_sbt_native_client: false
+          setup_remote_docker: false
           requires:
             - test
           filters:
